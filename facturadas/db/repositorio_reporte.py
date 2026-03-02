@@ -34,7 +34,11 @@ class RepositorioReporte:
             with conexion.cursor() as cursor:
                 for nombre_paso, archivo_sql, parametros in consultas_por_paso:
                     REGISTRO.info("Ejecutando %s", nombre_paso)
-                    cursor.execute(_leer_sql(archivo_sql), parametros)
+                    sql = _leer_sql(archivo_sql)
+                    if parametros:
+                        cursor.execute(sql, parametros)
+                    else:
+                        cursor.execute(sql)
 
                 cursor.execute(_leer_sql("step_05_final_select.sql"))
                 filas = cursor.fetchall()
