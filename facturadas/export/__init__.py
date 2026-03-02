@@ -1,2 +1,1 @@
-"""Export adapters."""
-
+"""Adaptadores de exportacion."""

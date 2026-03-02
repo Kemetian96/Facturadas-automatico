@@ -1,2 +1,1 @@
-"""Facturadas report package."""
-
+"""Paquete principal de Facturadas."""

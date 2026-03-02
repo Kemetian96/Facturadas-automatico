@@ -1,2 +1,1 @@
-"""Report use-cases."""
-
+"""Casos de uso de reportes."""

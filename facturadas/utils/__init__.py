@@ -1,2 +1,1 @@
-"""Small utility helpers."""
-
+"""Utilidades comunes."""

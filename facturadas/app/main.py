@@ -2,33 +2,35 @@ import argparse
 import logging
 from datetime import datetime, timedelta
 
-from facturadas.config.settings import get_settings
-from facturadas.reports.confirmadas_service import (
+from facturadas.config.configuracion import obtener_configuracion
+from facturadas.reports.servicio_confirmadas import (
     generar_reporte_confirmadas_vs_pagadas,
 )
 
 
-LOGGER = logging.getLogger(__name__)
+REGISTRO = logging.getLogger(__name__)
 
 
-def _default_dates() -> tuple[str, str]:
+def _fechas_por_defecto() -> tuple[str, str]:
     hoy = datetime.now()
     ayer = hoy - timedelta(days=1)
     return ayer.strftime("%Y-%m-%d"), hoy.strftime("%Y-%m-%d")
 
 
-def _parse_args() -> argparse.Namespace:
-    default_inicio, default_fin = _default_dates()
-    settings = get_settings()
+def _parsear_argumentos() -> argparse.Namespace:
+    fecha_inicio_defecto, fecha_fin_defecto = _fechas_por_defecto()
+    configuracion = obtener_configuracion()
 
     parser = argparse.ArgumentParser(
         description="Genera reporte de ordenes confirmadas vs pagadas."
     )
-    parser.add_argument("--fecha-inicio", default=default_inicio, help="YYYY-MM-DD")
-    parser.add_argument("--fecha-fin", default=default_fin, help="YYYY-MM-DD")
+    parser.add_argument(
+        "--fecha-inicio", default=fecha_inicio_defecto, help="YYYY-MM-DD"
+    )
+    parser.add_argument("--fecha-fin", default=fecha_fin_defecto, help="YYYY-MM-DD")
     parser.add_argument(
         "--output",
-        default=settings.default_output_path,
+        default=configuracion.ruta_salida_por_defecto,
         help="Ruta del archivo .xlsx de salida",
     )
     return parser.parse_args()
@@ -39,17 +41,16 @@ def main() -> int:
         level=logging.INFO,
         format="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
     )
-    args = _parse_args()
+    args = _parsear_argumentos()
 
-    LOGGER.info("Fecha inicio: %s", args.fecha_inicio)
-    LOGGER.info("Fecha fin: %s", args.fecha_fin)
-    LOGGER.info("Salida: %s", args.output)
+    REGISTRO.info("Fecha inicio: %s", args.fecha_inicio)
+    REGISTRO.info("Fecha fin: %s", args.fecha_fin)
+    REGISTRO.info("Salida: %s", args.output)
 
     generar_reporte_confirmadas_vs_pagadas(
         fecha_inicio=args.fecha_inicio,
         fecha_fin=args.fecha_fin,
         ruta_salida=args.output,
     )
-    LOGGER.info("Reporte generado correctamente.")
+    REGISTRO.info("Reporte generado correctamente.")
     return 0
-
