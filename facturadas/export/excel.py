@@ -17,6 +17,7 @@ OUTPUT_COLUMNS = [
     "HORA PAGADA",
     "HORA CONFIRMADA",
     "DIFERENCIA",
+    "OBSERVACION",
 ]
 
 SOURCE_TO_OUTPUT = {
@@ -33,6 +34,7 @@ SOURCE_TO_OUTPUT = {
     "hora_pagada": "HORA PAGADA",
     "hora_confirmada": "HORA CONFIRMADA",
     "diferencia": "DIFERENCIA",
+    "observacion": "OBSERVACION",
 }
 
 
